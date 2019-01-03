@@ -12,6 +12,7 @@ class PidRegulator():
         self.integral += (error * self.dt)
         derivative = (error - self.previousError)
 
+        self.integral *= 0.66
         self.previousError = error
 
         return (self.Kp * error) + (self.Ki * self.integral) + (self.Kd * derivative)

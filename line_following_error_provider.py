@@ -7,6 +7,8 @@ class LineFollowingErrorProvider():
         self.leftColorSensor = ColorSensor(INPUT_1)
         self.rightColorSensor = ColorSensor(INPUT_2)
 
+        self.correction = 1
+
     def calibrateSensors(self):
         self.leftColorSensor.calibrate_white()
         self.rightColorSensor.calibrate_white()
@@ -14,8 +16,11 @@ class LineFollowingErrorProvider():
         leftLightIntensity = self.leftColorSensor.reflected_light_intensity
         rightLightIntensity = self.rightColorSensor.reflected_light_intensity
 
+        self.correction = leftLightIntensity / rightLightIntensity
+
         print('Left sensor intensity: ', leftLightIntensity)
         print('Right sensor intensity: ', rightLightIntensity)
+        print('Correction: ', self.correction)
 
     def calculateError(self):
-        return self.leftColorSensor.reflected_light_intensity - self.rightColorSensor.reflected_light_intensity
+        return self.leftColorSensor.reflected_light_intensity - self.correction * self.rightColorSensor.reflected_light_intensity
